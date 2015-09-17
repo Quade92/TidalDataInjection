@@ -1,31 +1,33 @@
-var mongoose = require("mongoose");
-
-var getSensorLogModel = function(){
-    var sensorLogSchema = new mongoose.Schema({
-        timestamp: Number,
-        sensors: [
-            {
-                name: String,
-                value: Number
-            }
-        ]
-    });
-    return mongoose.model("SensorLog", sensorLogSchema);
-};
+var sensorLogModel = require("./sensorLogModel.js");
 
 var insertSensorLog = function(){
     // TODO this is a test version
-    var sensorLogModel = getSensorLogModel();
     var sensorLog = new sensorLogModel({
-        timestamp: 1,
+        timestamp: Date.now(),
         sensors: [
             {
                 name: "AN1",
-                value: "3.14125"
+                value: Math.random()*2+3.0
             },
             {
                 name: "AN2",
-                value: "6.28250"
+                value: Math.random()*2+3.0
+            },
+            {
+                name: "AN3",
+                value: Math.random()*2+3.0
+            },
+            {
+                name: "AN4",
+                value: Math.random()*2+3.0
+            },
+            {
+                name: "AN5",
+                value: Math.random()*2+3.0
+            },
+            {
+                name: "AN6",
+                value: Math.random()*2+3.0
             }
         ]
     });
@@ -37,6 +39,5 @@ var insertSensorLog = function(){
 };
 
 module.exports = {
-    getSensorLogModel: getSensorLogModel,
     insertSensorLog: insertSensorLog
 };
