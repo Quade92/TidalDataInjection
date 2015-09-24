@@ -1,18 +1,22 @@
 var SerialPort = require("serialport").SerialPort;
 var EventBus = require("./EventBus");
 
+exports.SerialInterface = SerialInterface;
+
 function SerialInterface(COM, br){
-    this.serialPort = SerialPort(COM, {baudrate: br}, false);
+    this.serialPort = new SerialPort(COM, {baudrate: br}, false);
     this.initInterface = function(){
-        serialPort.open(function(error){
+        var sp = this.serialPort;
+        sp.open(function(error){
             if(error){
                 console.log("failed to open: " + error);
             }
             else{
-                console.log(COM.toString()+" is open");
-                serialPort.on("data", function(data) {
-                    console.log("data received: " + data);
-                    EventBus.dataEmitter.emit("DataReceived", data);
+                console.log(COM + " is open");
+                sp.on("data", function(data) {
+                    EventBus.sd = data.toString();
+                    console.log("data received: " + EventBus.sd);
+                    EventBus.dataEmitter.emit("DataReceived", EventBus.sd);
                 });
             }
         });

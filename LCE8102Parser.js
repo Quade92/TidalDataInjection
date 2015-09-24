@@ -1,20 +1,19 @@
 var EventBus = require("./EventBus");
+exports.Parser = LCE8102Parser;
 
 function LCE8102Parser(SN){
     this.sn = SN;
     this.bufferQueue = [];
     this.initParser = function(){
-        EventBus.dataEmitter.on("DataReceived", this.parseRawString(data));
-        EventBus.parseEmitter.on("ParseFinished", this.transmitDocuments);
+        EventBus.dataEmitter.on("DataReceived", this.parseRawString.bind(this));
+        EventBus.parseEmitter.on("ParseFinished", this.transmitDocuments.bind(this));
     };
-    this.parseRawString = function(data){
-        var entryArray = data.split(";");
+    this.parseRawString = function(){
+        var entryArray = EventBus.sd.split(";");
         // remove the last empty element ''
         entryArray.splice(-1);
         var documentArray = [];
-        // entry is raw string from serial port splited by ";"
-        // i.e. return value of sliceDocuments
-        for (entry in entryArray){
+        for (var entry_index=0; entry_index!=entryArray.length; entry_index++){
             var doc = {};
             // schema related
             doc.timestamp = Date.now();
@@ -22,13 +21,13 @@ function LCE8102Parser(SN){
             doc.sensors = [];
             // raw data is seperated by TAB. so the values is seperated by space(s).
             // using regex to split them
-            var valueArray = entry.split(/\s+/);
-            for(i=0; i!=valueArray.length; i++){
+            var valueArray = entryArray[entry_index].split(/\s+/);
+            for(var value_index=0; value_index!=valueArray.length; value_index++){
                 doc.sensors.push(
                     {
-                        name:"AN"+(i+1).toString(),
+                        name:"AN"+(value_index+1).toString(),
                         // string to number transform
-                        value: parseFloat(valueArray[i])
+                        value: parseFloat(valueArray[value_index])
                     });
             }
             documentArray.push(doc);
@@ -40,31 +39,32 @@ function LCE8102Parser(SN){
         else if(this.bufferQueue.length == 0){
             // this is first push. timestamps are based on the last doc's timestamp
             // if there's only 1 doc in docArr. for loop is jumped. i.e. no timestamp correction
-            for(i=documentArray.length-2; i>0; i--){
-                documentArray[i].timestamp = documentArray[i+1].timestamp-1;
+            for(back_doc_index=documentArray.length-2; back_doc_index>0; back_doc_index--){
+                documentArray[back_doc_index].timestamp = documentArray[back_doc_index+1].timestamp-1;
             }
-            for(doc in documentArray){
-                this.bufferQueue.push(doc);
+            for(doc_index=0; doc_index!=documentArray.length; doc_index++){
+                this.bufferQueue.push(documentArray[doc_index]);
             }
         }
         else{
             // basing on last valid document's (Q head) timestamp
             documentArray[0].timestamp = this.bufferQueue[this.bufferQueue.lenth-1].timestamp + 1;
             this.bufferQueue.push(documentArray[0]);
-            for(i=1; i!=documentArray.length; i++){
-                documentArray[i].timestamp = documentArray[i-1].timestamp + 1;
-                this.bufferQueue.push(documentArray[i]);
+            for(doc_index=1; doc_index!=documentArray.length; doc_index++){
+                documentArray[doc_index].timestamp = documentArray[doc_index-1].timestamp + 1;
+                this.bufferQueue.push(documentArray[doc_index]);
             }
         }
         EventBus.parseEmitter.emit("ParseFinished");
     };
     this.transmitDocuments = function(){
         var docs = [];
-        while(this.bufferQueue.length > 1){
+        while(this.bufferQueue.length > 0){
             docs.push(this.bufferQueue.shift());
         }
         if(docs.length != 0){
-            EventBus.transEmitter.emit("transmit", docs);
+            EventBus.docs = docs;
+            EventBus.transEmitter.emit("transmit", EventBus.docs);
         }
     }
 }
