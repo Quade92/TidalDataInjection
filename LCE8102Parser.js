@@ -48,7 +48,7 @@ function LCE8102Parser(SN){
         }
         else{
             // basing on last valid document's (Q head) timestamp
-            documentArray[0].timestamp = this.bufferQueue[this.bufferQueue.lenth-1].timestamp + 1;
+            documentArray[0].timestamp = this.bufferQueue[this.bufferQueue.length-1].timestamp + 1;
             this.bufferQueue.push(documentArray[0]);
             for(doc_index=1; doc_index!=documentArray.length; doc_index++){
                 documentArray[doc_index].timestamp = documentArray[doc_index-1].timestamp + 1;
@@ -59,7 +59,7 @@ function LCE8102Parser(SN){
     };
     this.transmitDocuments = function(){
         var docs = [];
-        while(this.bufferQueue.length > 0){
+        while(this.bufferQueue.length > 1){
             docs.push(this.bufferQueue.shift());
         }
         if(docs.length != 0){
