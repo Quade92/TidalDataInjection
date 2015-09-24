@@ -1,8 +1,5 @@
 var SerialPort = require("serialport").SerialPort;
-var EventEmitter = require("events").EventEmitter;
-
-var dataEmitter = new EventEmitter();
-exports.dataEmitter = dataEmitter;
+var EventBus = require("./EventBus");
 
 function SerialInterface(COM, br){
     this.serialPort = SerialPort(COM, {baudrate: br}, false);
@@ -15,7 +12,7 @@ function SerialInterface(COM, br){
                 console.log(COM.toString()+" is open");
                 serialPort.on("data", function(data) {
                     console.log("data received: " + data);
-                    dataEmitter.emit("DataReceived", data);
+                    EventBus.dataEmitter.emit("DataReceived", data);
                 });
             }
         });

@@ -1,19 +1,14 @@
-var serialInterface = require("./SerialInterface");
-var EventEmitter = require("events").EventEmitter;
-
-var parseEmitter = EventEmitter();
-var transEmitter = EventEmitter();
-exports.transEmitter = transEmitter;
+var EventBus = require("./EventBus");
 
 function LCE8102Parser(SN){
     this.sn = SN;
     this.bufferQueue = [];
     this.initParser = function(){
-        serialInterface.dataEmitter.on("DataReceived", this.parseRawString(rs));
-        parseEmitter.on("ParseFinished", this.transmitDocuments);
+        EventBus.dataEmitter.on("DataReceived", this.parseRawString(data));
+        EventBus.parseEmitter.on("ParseFinished", this.transmitDocuments);
     };
-    this.parseRawString = function(rs){
-        var entryArray = rs.split(";");
+    this.parseRawString = function(data){
+        var entryArray = data.split(";");
         // remove the last empty element ''
         entryArray.splice(-1);
         var documentArray = [];
@@ -61,7 +56,7 @@ function LCE8102Parser(SN){
                 this.bufferQueue.push(documentArray[i]);
             }
         }
-        parseEmitter.emit("ParseFinished");
+        EventBus.parseEmitter.emit("ParseFinished");
     };
     this.transmitDocuments = function(){
         var docs = [];
@@ -69,7 +64,7 @@ function LCE8102Parser(SN){
             docs.push(this.bufferQueue.shift());
         }
         if(docs.length != 0){
-            transEmitter.emit("transmit", docs);
+            EventBus.transEmitter.emit("transmit", docs);
         }
     }
 }
