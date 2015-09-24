@@ -1,18 +1,23 @@
 var SerialPort = require("serialport").SerialPort;
+var EventEmitter = require("events").EventEmitter;
 
-var serialPort = new SerialPort("COM7", {
-    baudrate: 9600
-}, false); // this is the openImmediately flag [default is true]
+var dataEmitter = new EventEmitter();
+exports.dataEmitter = dataEmitter;
 
-serialPort.open(function (error) {
-    if ( error ) {
-        console.log('failed to open: '+error);
-    } else {
-        console.log('open');
-        serialPort.on('data', function(data) {
-            //var serialData = JSON.parse(data);
-            //console.log('data received: ' + COMPaser(data,"json context"));
-            console.log("data received: " + data);
+function SerialInterface(COM, br){
+    this.serialPort = SerialPort(COM, {baudrate: br}, false);
+    this.initInterface = function(){
+        serialPort.open(function(error){
+            if(error){
+                console.log("failed to open: " + error);
+            }
+            else{
+                console.log(COM.toString()+" is open");
+                serialPort.on("data", function(data) {
+                    console.log("data received: " + data);
+                    dataEmitter.emit("DataReceived", data);
+                });
+            }
         });
-    }
-});
+    };
+}
