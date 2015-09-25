@@ -1,7 +1,9 @@
 var mongoose = require("mongoose");
 var prompt = require("prompt");
 
-var dbLogin = function(dbName, ip, port) {
+exports.dbLogin = dbLogin;
+
+function dbLogin(dbName, ip, port) {
     // default { ip : localhost, port : 27999 }
     ip = typeof ip !== "undefined" ? ip : "localhost";
     port = typeof port !== "undefined" ? port : "27999";
@@ -22,8 +24,4 @@ var dbLogin = function(dbName, ip, port) {
         });
         return mongoose.connection;
     });
-};
-
-module.exports = {
-    dbLogin: dbLogin
 };

@@ -1,5 +1,7 @@
 var mongoose = require("mongoose");
 
+exports.model = mongoose.model("SensorLog", sensorLogSchema);
+
 var sensorLogSchema = new mongoose.Schema({
     timestamp: Number,
     dtu_id: Number,
@@ -10,5 +12,3 @@ var sensorLogSchema = new mongoose.Schema({
         }
     ]
 });
-
-module.exports = mongoose.model("SensorLog", sensorLogSchema);
