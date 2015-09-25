@@ -22,6 +22,7 @@ function LCE8102Parser(SN){
             // raw data is seperated by TAB. so the values is seperated by space(s).
             // using regex to split them
             var valueArray = entryArray[entry_index].split(/\s+/);
+            valueArray.splice(-1);
             for(var value_index=0; value_index!=valueArray.length; value_index++){
                 doc.sensors.push(
                     {

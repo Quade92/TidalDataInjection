@@ -12,7 +12,6 @@ EventBus.loginEmitter.once("LOGINOK", function(){
     EventBus.conn.once("open", function () {
         var dbInterface = new DbInterface(EventBus.conn);
         EventBus.transEmitter.on("TRANSMIT", function(){
-            console.log(EventBus.docs);
             dbInterface.writeIntoDb();
         });
         si.initInterface();
