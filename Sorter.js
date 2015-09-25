@@ -8,7 +8,7 @@ function Sorter(db, collection){
         colName:collection
     };
     this.initSorter = function(){
-        EventBus.transEmitter.on("TRANSMIT", this.sortOut().bind(this));
+        EventBus.transEmitter.on("TRANSMIT", this.sortOut.bind(this));
     };
     this.sortOut = function(){
         EventBus.sorterEmitter.emit("SORTOUT");

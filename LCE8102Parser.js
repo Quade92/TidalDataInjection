@@ -28,7 +28,8 @@ function LCE8102Parser(SN){
                         name:"AN"+(value_index+1).toString(),
                         // string to number transform
                         value: parseFloat(valueArray[value_index])
-                    });
+                    }
+                );
             }
             documentArray.push(doc);
         }
