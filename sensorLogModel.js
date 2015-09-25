@@ -16,4 +16,4 @@ var sensorLogSchema = new mongoose.Schema(
     }
 );
 
-module.exports = mongoose.model("SensorLog", sensorLogSchema);
+exports.model = mongoose.model("SensorLog", sensorLogSchema);
