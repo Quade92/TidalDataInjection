@@ -11,6 +11,7 @@ function Sorter(db, collection){
         EventBus.transEmitter.on("TRANSMIT", this.sortOut.bind(this));
     };
     this.sortOut = function(){
+        EventBus.dst = this.dst;
         EventBus.sorterEmitter.emit("SORTOUT");
     }
 }
