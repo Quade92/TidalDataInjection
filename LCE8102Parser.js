@@ -41,7 +41,7 @@ function LCE8102Parser(SN){
             // this is first push. timestamps are based on the last doc's timestamp
             // if there's only 1 doc in docArr. for loop is ignored. i.e. no timestamp correction
             for(var back_doc_index=documentArray.length-2; back_doc_index>0; back_doc_index--){
-                documentArray[back_doc_index].timestamp = documentArray[back_doc_index+1].timestamp-1;
+                documentArray[back_doc_index].timestamp = documentArray[back_doc_index+1].timestamp-1000;
             }
             for(var doc_index=0; doc_index!=documentArray.length; doc_index++){
                 this.bufferQueue.push(documentArray[doc_index]);
@@ -49,10 +49,10 @@ function LCE8102Parser(SN){
         }
         else{
             // basing on last valid document's (Q head) timestamp
-            documentArray[0].timestamp = this.bufferQueue[this.bufferQueue.length-1].timestamp + 1;
+            documentArray[0].timestamp = this.bufferQueue[this.bufferQueue.length-1].timestamp + 1000;
             this.bufferQueue.push(documentArray[0]);
             for(doc_index=1; doc_index!=documentArray.length; doc_index++){
-                documentArray[doc_index].timestamp = documentArray[doc_index-1].timestamp + 1;
+                documentArray[doc_index].timestamp = documentArray[doc_index-1].timestamp + 1000;
                 this.bufferQueue.push(documentArray[doc_index]);
             }
         }
