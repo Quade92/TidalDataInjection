@@ -41,7 +41,7 @@ function LCE8102Parser(SN){
         else if(this.bufferQueue.length == 0){
             // this is first push. timestamps are based on the last doc's timestamp
             // if there's only 1 doc in docArr. for loop is ignored. i.e. no timestamp correction
-            for(var back_doc_index=documentArray.length-2; back_doc_index>0; back_doc_index--){
+            for(var back_doc_index=documentArray.length-2; back_doc_index>-1; back_doc_index--){
                 documentArray[back_doc_index].timestamp = documentArray[back_doc_index+1].timestamp-1000;
             }
             for(var doc_index=0; doc_index!=documentArray.length; doc_index++){

@@ -7,7 +7,7 @@ function DbInterface(){
     this.initInterface = function(){
         // ensures when saving docs, the connection is established
         if(EventBus.conn.readyState==1){
-            EventBus.sorterEmitter.on("TRANSMIT", this.writeIntoDb.bind(this));
+            EventBus.transEmitter.on("TRANSMIT", this.writeIntoDb.bind(this));
         }
     };
     this.writeIntoDb = function(){
