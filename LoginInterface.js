@@ -25,4 +25,4 @@ function DbLogin(dbName, ip, port) {
     });
 }
 
-exports.Login = DbLogin;
+exports.DbLogin = DbLogin;
