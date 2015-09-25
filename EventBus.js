@@ -5,9 +5,11 @@ module.exports = {
     sd: "",
     docs: [],
     dst: {},
+    conn: null,
     //signal bus
     dataEmitter: new EventEmitter(),
     parseEmitter: new EventEmitter(),
     transEmitter: new EventEmitter(),
-    sorterEmitter: new EventEmitter()
+    sorterEmitter: new EventEmitter(),
+    loginEmitter: new EventEmitter()
 };

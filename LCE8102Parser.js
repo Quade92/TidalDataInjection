@@ -65,7 +65,7 @@ function LCE8102Parser(SN){
         }
         if(docs.length != 0){
             EventBus.docs = docs;
-            EventBus.transEmitter.emit("TRANSMIT", EventBus.docs);
+            EventBus.transEmitter.emit("TRANSMIT");
         }
     }
 }
