@@ -5,8 +5,8 @@ function LCE8102Parser(SN){
     this.sn = SN;
     this.bufferQueue = [];
     this.initParser = function(){
-        EventBus.dataEmitter.on("DataReceived", this.parseRawString.bind(this));
-        EventBus.parseEmitter.on("ParseFinished", this.transmitDocuments.bind(this));
+        EventBus.dataEmitter.on("DATARECEIVED", this.parseRawString.bind(this));
+        EventBus.parseEmitter.on("PARSEFINISHED", this.transmitDocuments.bind(this));
     };
     this.parseRawString = function(){
         var entryArray = EventBus.sd.split(";");
@@ -38,11 +38,11 @@ function LCE8102Parser(SN){
         }
         else if(this.bufferQueue.length == 0){
             // this is first push. timestamps are based on the last doc's timestamp
-            // if there's only 1 doc in docArr. for loop is jumped. i.e. no timestamp correction
-            for(back_doc_index=documentArray.length-2; back_doc_index>0; back_doc_index--){
+            // if there's only 1 doc in docArr. for loop is ignored. i.e. no timestamp correction
+            for(var back_doc_index=documentArray.length-2; back_doc_index>0; back_doc_index--){
                 documentArray[back_doc_index].timestamp = documentArray[back_doc_index+1].timestamp-1;
             }
-            for(doc_index=0; doc_index!=documentArray.length; doc_index++){
+            for(var doc_index=0; doc_index!=documentArray.length; doc_index++){
                 this.bufferQueue.push(documentArray[doc_index]);
             }
         }
@@ -55,7 +55,7 @@ function LCE8102Parser(SN){
                 this.bufferQueue.push(documentArray[doc_index]);
             }
         }
-        EventBus.parseEmitter.emit("ParseFinished");
+        EventBus.parseEmitter.emit("PARSEFINISHED");
     };
     this.transmitDocuments = function(){
         var docs = [];
@@ -64,7 +64,7 @@ function LCE8102Parser(SN){
         }
         if(docs.length != 0){
             EventBus.docs = docs;
-            EventBus.transEmitter.emit("transmit", EventBus.docs);
+            EventBus.transEmitter.emit("TRANSMIT", EventBus.docs);
         }
     }
 }
