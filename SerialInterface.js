@@ -16,7 +16,7 @@ function SerialInterface(COM, br){
                 sp.on("data", function(data) {
                     EventBus.sd = data.toString();
                     console.log("data received: " + EventBus.sd);
-                    EventBus.dataEmitter.emit("DATARECEIVED", EventBus.sd);
+                    EventBus.dataEmitter.emit("DATARECEIVED");
                 });
             }
         });
