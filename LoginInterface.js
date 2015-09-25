@@ -20,7 +20,7 @@ function DbLogin(dbName, ip, port){
                 console.log(err);
                 return mongoose.connection;
             }
-            console.log(mongoose.connection.readyState);
+            console.log("mongodb connection state: "+mongoose.connection.readyState);
             EventBus.conn = mongoose.connection;
             EventBus.loginEmitter.emit("LOGINOK");
         });
