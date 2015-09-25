@@ -24,11 +24,12 @@ function LCE8102Parser(SN){
             var valueArray = entryArray[entry_index].split(/\s+/);
             for(var value_index=0; value_index!=valueArray.length; value_index++){
                 doc.sensors.push(
-                    {
-                        name:"AN"+(value_index+1).toString(),
-                        // string to number transform
-                        value: parseFloat(valueArray[value_index])
-                    }
+                    //{
+                    //    name:"AN"+(value_index+1).toString(),
+                    //    // string to number transform
+                    //    value: parseFloat(valueArray[value_index])
+                    //}
+                    valueArray[value_index]
                 );
             }
             documentArray.push(doc);
@@ -37,22 +38,11 @@ function LCE8102Parser(SN){
         if(documentArray.length == 1){
             this.bufferQueue.push(documentArray[0]);
         }
-        else if(this.bufferQueue.length == 0){
-            // this is first push. timestamps are based on the last doc's timestamp
-            // if there's only 1 doc in docArr. for loop is ignored. i.e. no timestamp correction
-            for(var back_doc_index=documentArray.length-2; back_doc_index>0; back_doc_index--){
-                documentArray[back_doc_index].timestamp = documentArray[back_doc_index+1].timestamp-1;
+        else{
+            for(var back_doc_index=documentArray.length-2; back_doc_index>-1; back_doc_index--){
+                documentArray[back_doc_index].timestamp = documentArray[back_doc_index+1].timestamp-1000;
             }
             for(var doc_index=0; doc_index!=documentArray.length; doc_index++){
-                this.bufferQueue.push(documentArray[doc_index]);
-            }
-        }
-        else{
-            // basing on last valid document's (Q head) timestamp
-            documentArray[0].timestamp = this.bufferQueue[this.bufferQueue.length-1].timestamp + 1;
-            this.bufferQueue.push(documentArray[0]);
-            for(doc_index=1; doc_index!=documentArray.length; doc_index++){
-                documentArray[doc_index].timestamp = documentArray[doc_index-1].timestamp + 1;
                 this.bufferQueue.push(documentArray[doc_index]);
             }
         }
@@ -60,7 +50,7 @@ function LCE8102Parser(SN){
     };
     this.transmitDocuments = function(){
         var docs = [];
-        while(this.bufferQueue.length > 1){
+        while(this.bufferQueue.length > 0){
             docs.push(this.bufferQueue.shift());
         }
         if(docs.length != 0){
