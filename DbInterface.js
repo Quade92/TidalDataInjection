@@ -3,12 +3,11 @@ var model = require("./sensorLogModel").model;
 
 exports.DbInterface = DbInterface;
 
-function DbInterface(conn){
-    this.conn = conn;
+function DbInterface(){
     console.log("flag");
     this.initInterface = function(){
         // ensures when saving docs, the connection is established
-        if(this.conn.readyState==1){
+        if(EventBus.conn.readyState==1){
             console.log("the connection is established");
             EventBus.sorterEmitter.on("TRANSMIT", this.writeIntoDb.bind(this));
         }
