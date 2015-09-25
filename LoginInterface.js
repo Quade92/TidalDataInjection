@@ -1,7 +1,8 @@
 var mongoose = require("mongoose");
 var prompt = require("prompt");
+var EventBus = require("./EventBus");
 
-var dbLogin = function(dbName, ip, port) {
+function DbLogin(dbName, ip, port) {
     // default { ip : localhost, port : 27999 }
     ip = typeof ip !== "undefined" ? ip : "localhost";
     port = typeof port !== "undefined" ? port : "27999";
@@ -17,13 +18,11 @@ var dbLogin = function(dbName, ip, port) {
                 console.log(err);
                 return mongoose.connection;
             }
-            console.log("connection success to " + result.username + "@" + ip + ":" + port +
-                "/" + dbName);
+            console.log("mongo connection status: "+mongoose.connection.readyState);
+            EventBus.conn = mongoose.connection;
+            EventBus.loginEmitter.emit("LOGINOK");
         });
-        return mongoose.connection;
     });
-};
+}
 
-module.exports = {
-    dbLogin: dbLogin
-};
+exports.Login = DbLogin;

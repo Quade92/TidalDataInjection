@@ -22,14 +22,14 @@ function LCE8102Parser(SN){
             // raw data is seperated by TAB. so the values is seperated by space(s).
             // using regex to split them
             var valueArray = entryArray[entry_index].split(/\s+/);
+            valueArray.splice(-1);
             for(var value_index=0; value_index!=valueArray.length; value_index++){
                 doc.sensors.push(
-                    //{
-                    //    name:"AN"+(value_index+1).toString(),
-                    //    // string to number transform
-                    //    value: parseFloat(valueArray[value_index])
-                    //}
-                    valueArray[value_index]
+                    {
+                        name:"AN"+(value_index+1).toString(),
+                        // string to number transform
+                        value: parseFloat(valueArray[value_index])
+                    }
                 );
             }
             documentArray.push(doc);
@@ -55,7 +55,7 @@ function LCE8102Parser(SN){
         }
         if(docs.length != 0){
             EventBus.docs = docs;
-            EventBus.transEmitter.emit("TRANSMIT", EventBus.docs);
+            EventBus.transEmitter.emit("TRANSMIT");
         }
     }
 }
