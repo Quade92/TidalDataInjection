@@ -12,7 +12,8 @@ var sensorLogSchema = new mongoose.Schema(
         ]
     },
     {
-        collection: "sensorlogs"
+        collection: "sensorlogs",
+        versionKey:false
     }
 );
 
