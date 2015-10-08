@@ -6,6 +6,7 @@ module.exports = {
     docs: [],
     dst: {},
     conn: null,
+    mode: "backward",
     //signal bus
     dataEmitter: new EventEmitter(),
     parseEmitter: new EventEmitter(),
