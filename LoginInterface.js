@@ -2,8 +2,6 @@ var mongoose = require("mongoose");
 var prompt = require("prompt");
 var EventBus = require("./EventBus");
 
-exports.DbLogin = DbLogin;
-
 function DbLogin(dbName, ip, port){
     // default { ip : localhost, port : 27999 }
     ip = typeof ip !== "undefined" ? ip : "localhost";
@@ -26,3 +24,5 @@ function DbLogin(dbName, ip, port){
         });
     });
 }
+
+exports.DbLogin = DbLogin;

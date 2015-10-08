@@ -10,6 +10,5 @@ module.exports = {
     dataEmitter: new EventEmitter(),
     parseEmitter: new EventEmitter(),
     transEmitter: new EventEmitter(),
-    sorterEmitter: new EventEmitter(),
     loginEmitter: new EventEmitter()
 };

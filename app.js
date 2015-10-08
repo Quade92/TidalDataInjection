@@ -10,7 +10,7 @@ Login("sensorLog");
 
 EventBus.loginEmitter.once("LOGINOK", function(){
     EventBus.conn.once("open", function () {
-        var dbInterface = new DbInterface(EventBus.conn);
+        var dbInterface = new DbInterface();
         si.initInterface();
         parser.initParser();
         dbInterface.initInterface();
