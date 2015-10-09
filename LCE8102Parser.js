@@ -16,7 +16,10 @@ function LCE8102Parser(SN){
         for (var entry_index=0; entry_index!=entryArray.length; entry_index++){
             var doc = {};
             // schema related
-            doc.timestamp = Date.now();
+            var now = new Date();
+            var utcTime = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),
+                now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
+            doc.timestamp = utcTime.getTime();
             doc.dtu_id = this.sn;
             doc.sensors = [];
             // raw data is seperated by TAB. so the values is seperated by space(s).
