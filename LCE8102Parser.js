@@ -38,7 +38,7 @@ function LCE8102Parser(SN){
             documentArray.push(doc);
         }
         var back_doc_index,doc_index;
-        if(EventBus=="backward"){
+        if(EventBus.mode=="backward"){
             // rewrite all the timestamp field below
             if(documentArray.length == 1){
                 this.bufferQueue.push(documentArray[0]);
