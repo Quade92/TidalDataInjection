@@ -18,7 +18,7 @@ function LCE8102Parser(SN){
             // schema related
             var now = new Date();
             var utcTime = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),
-                now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
+                now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds());
             doc.timestamp = utcTime.getTime();
             doc.dtu_id = this.sn;
             doc.sensors = [];
@@ -59,7 +59,7 @@ function LCE8102Parser(SN){
                 this.bufferQueue.push(documentArray[0]);
             }
             else if(this.bufferQueue.length == 0){
-                // this is first push. timestamps are based on the last doc's timestamp
+                // this is first push. timestamps are based on the last doc's timestamp. i.e. backward mode
                 // if there's only 1 doc in docArr. for loop is ignored. i.e. no timestamp correction
                 for(back_doc_index=documentArray.length-2; back_doc_index>-1; back_doc_index--){
                     documentArray[back_doc_index].timestamp = documentArray[back_doc_index+1].timestamp-1000;
