@@ -1,2 +1,2 @@
 # TidalDataStorage
-store wave energy generator's running data using mongodb and nodejs
+store tidal energy generator's monitoring data using mongodb and nodejs
