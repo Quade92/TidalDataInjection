@@ -1,0 +1,10 @@
+{
+  "name": "DataStore",
+  "version": "0.0.1",
+  "dependencies": {
+    "prompt": "0.2.14",
+    "mongoose": "4.1.6",
+    "request": "2.67.0",
+    "serialport": "1.7.4"
+  }
+}
