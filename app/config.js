@@ -14,7 +14,7 @@ parserConfig = {
 apiConfig = {
     host: "localhost",
     port: "5000",
-    path: "/"
+    path: "/record"
 };
 
 dbConfig = {
