@@ -29,12 +29,12 @@ function PushToDbApi(host, port, path) {
                     json: dataBus.docs[i]
                 },
                 function (error, response, body) {
+                    var d = new Date();
                     if (!error && response.statusCode == 200) {
-                        var d = new Date();
-                        console.log(d.toLocaleString()+" - "+body.message);
+                        console.log(d.toLocaleString()+" - SUCCESS: "+body.message);
                     }
                     else {
-                        console.log(error);
+                        console.log(d.toLocaleString()+" - ERROR: "+error);
                     }
                 });
         }

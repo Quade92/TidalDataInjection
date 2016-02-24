@@ -22,9 +22,9 @@ function LCE8102Parser(sn, mode){
             };
             // schema related
             var now = new Date();
-            var utcTime = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),
-                now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds());
-            doc.data.timestamp = utcTime.getTime();
+            //var utcTime = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),
+            //    now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds());
+            doc.data.timestamp = now.getTime();
             doc.data.dtu_id = this.sn;
             doc.data.sensors = {};
             // raw data is seperated by TAB. so the values is seperated by space(s).
