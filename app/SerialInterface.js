@@ -1,7 +1,7 @@
 var SerialPort = require("serialport").SerialPort;
 var eventBus = require("./bus").eventBus;
 var dataBus = require("./bus").dataBus;
-var spConfig = require("./config").spConfig;
+var spConfig = require("../config").spConfig;
 exports.SerialInterface = SerialInterface;
 
 function SerialInterface(COM, br){

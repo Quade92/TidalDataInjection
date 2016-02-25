@@ -1,6 +1,6 @@
 var eventBus = require("./bus").eventBus;
 var dataBus = require("./bus").dataBus;
-var parserConfig = require("./config").parserConfig;
+var parserConfig = require("../config").parserConfig;
 exports.Parser = LCE8102Parser;
 
 function LCE8102Parser(sn, mode){

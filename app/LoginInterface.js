@@ -2,7 +2,7 @@ var mongoose = require("mongoose");
 var prompt = require("prompt");
 var eventBus = require("./bus").eventBus;
 var dataBus = require("./bus").dataBus;
-var dbConfig = require("./config").dbConfig;
+var dbConfig = require("../config").dbConfig;
 
 function DbLogin(db, host, port) {
     // default { ip : localhost, port : 27999 }
