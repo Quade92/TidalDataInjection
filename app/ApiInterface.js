@@ -24,7 +24,8 @@ function PushToDbApi(host, port, path) {
                     method: 'POST',
                     url: this.url,
                     headers: {
-                        "Authorization": this.auth
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer "+dataBus.token
                     },
                     json: dataBus.docs[i]
                 },

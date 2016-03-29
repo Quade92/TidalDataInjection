@@ -20,7 +20,7 @@ apiConfig = {
 dbConfig = {
     host: "localhost",
     port: "27999",
-    db: "raw_data_db"
+    db: "data_db"
 };
 
 spConfig = {

@@ -1,14 +1,12 @@
 var mongoose = require("mongoose");
 var prompt = require("prompt");
+var request = require("request");
 var eventBus = require("./bus").eventBus;
 var dataBus = require("./bus").dataBus;
 var dbConfig = require("../config").dbConfig;
 
-function DbLogin(db, host, port) {
+function DbLogin() {
     // default { ip : localhost, port : 27999 }
-    this.ip = typeof host !== "undefined" ? host : dbConfig.host;
-    this.port = typeof port !== "undefined" ? port : dbConfig.port;
-    this.db = typeof db!=="undefined" ? db : dbConfig.db;
     prompt.start();
     var schema = {
         properties: {
@@ -25,17 +23,33 @@ function DbLogin(db, host, port) {
             console.log("Error: " + err);
             return mongoose.connection;
         }
-        mongoose.connect("mongodb://" + result.username + ":" + result.password +
-            "@" + this.ip + ":" + this.port + "/" + this.db, function (err) {
-            if (err) {
-                console.log(err);
-                return mongoose.connection;
-            }
-            console.log("mongodb connection status: "+mongoose.connection.readyState);
-            dataBus.conn = mongoose.connection;
-            dataBus.auth = "Basic " + new Buffer(result.username+":"+result.password).toString("base64");
-            eventBus.loginEmitter.emit("LOGINOK");
-        });
+        request({
+                method: 'POST',
+                url: "http://localhost:5000/authenticate",
+                json: {
+                    "un": result.username,
+                    "pwd": result.password
+                }
+            },
+            function (error, response, body) {
+                var d = new Date();
+                if (!error && response.statusCode == 200) {
+                    console.log(d.toLocaleString() + " - SUCCESS: " + body.message);
+                }
+                else {
+                    console.log(d.toLocaleString() + " - ERROR: " + error);
+                }
+                mongoose.connect("mongodb://@" + dbConfig.host + ":" + dbConfig.port + "/" + dbConfig.db, function (err) {
+                    if (err) {
+                        console.log(err);
+                        return mongoose.connection;
+                    }
+                    console.log("mongodb connection status: " + mongoose.connection.readyState);
+                    dataBus.conn = mongoose.connection;
+                    dataBus.token = body.result.token;
+                    eventBus.loginEmitter.emit("LOGINOK");
+                });
+            });
     });
 }
 

@@ -8,7 +8,7 @@ eventBus = {
 };
 
 dataBus = {
-    auth: "",
+    token: "",
     sd: "",
     docs: [],
     conn: null
